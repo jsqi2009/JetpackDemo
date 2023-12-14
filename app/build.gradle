@@ -30,6 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -46,8 +50,16 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
     api 'com.github.getActivity:ToastUtils:10.5'
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+    //微信开源项目，替代SP
+    implementation 'com.tencent:mmkv:1.2.14'
+    implementation 'com.facebook.stetho:stetho:1.6.0'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
 
-    //网络请求
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
+    //网络请求核心库
     implementation project(path: ':ShinetechLib')
 
 }

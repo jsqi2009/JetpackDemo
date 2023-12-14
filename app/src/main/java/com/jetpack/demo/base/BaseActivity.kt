@@ -18,10 +18,6 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>: BaseVmVbActiv
     var loadingDialog: KProgressHUD? = null
 
     /**
-     * 当前Activity绑定的视图布局Id abstract修饰供子类实现
-     */
-    abstract override fun layoutId(): Int
-    /**
      * 当前Activityc创建后调用的方法 abstract修饰供子类实现
      */
     abstract override fun initView(savedInstanceState: Bundle?)

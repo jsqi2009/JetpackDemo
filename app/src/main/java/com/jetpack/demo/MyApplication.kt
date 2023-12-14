@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import com.hjq.toast.ToastUtils
+import com.tencent.mmkv.MMKV
 import me.hgj.jetpackmvvm.base.BaseApplication
 import timber.log.Timber
 
@@ -33,7 +34,7 @@ class MyApplication: BaseApplication(), ViewModelStoreOwner {
     }
 
     private fun init() {
-        // 初始化 Toast 框架
+        MMKV.initialize(this, this.filesDir.absolutePath + "/demo")
         ToastUtils.init(this)
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

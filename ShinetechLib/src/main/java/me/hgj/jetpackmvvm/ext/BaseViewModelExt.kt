@@ -239,7 +239,7 @@ suspend fun <T> executeResponse(
 ) {
     coroutineScope {
         when {
-            response.isSucces() -> {
+            response.isSuccess() -> {
                 success(response.getResponseData())
             }
             else -> {
