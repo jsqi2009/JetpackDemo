@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import com.hjq.toast.ToastUtils
 import me.hgj.jetpackmvvm.base.BaseApplication
+import timber.log.Timber
 
 /**
  * author : Jason
@@ -25,9 +27,17 @@ class MyApplication: BaseApplication(), ViewModelStoreOwner {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
         mAppViewModelStore = ViewModelStore()
 
+        init()
+    }
+
+    private fun init() {
+        // 初始化 Toast 框架
+        ToastUtils.init(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     /**
