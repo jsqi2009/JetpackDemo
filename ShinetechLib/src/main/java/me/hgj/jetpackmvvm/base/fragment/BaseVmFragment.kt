@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import me.hgj.jetpackmvvm.base.BaseApplication
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getVmClazz
 import me.hgj.jetpackmvvm.network.manager.NetState
 import me.hgj.jetpackmvvm.network.manager.NetworkStateManager
+import me.hgj.jetpackmvvm.util.AndroidBus
 
 /**
  * 作者　: hegaojian
@@ -37,6 +39,15 @@ abstract class BaseVmFragment<VM : BaseViewModel> : Fragment() {
      * 当前Fragment绑定的视图布局
      */
     abstract fun layoutId(): Int
+
+    lateinit var mBus: AndroidBus
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mBus = BaseApplication[requireActivity()].mBus
+        this.mBus.register(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -4,22 +4,30 @@ import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import me.hgj.jetpackmvvm.base.BaseApplication
 
 /**
  * author : Jason
  *  date   : 2023/12/14 10:36
  *  desc   :
  */
-class MyApplication: Application(), ViewModelStoreOwner {
+class MyApplication: BaseApplication(), ViewModelStoreOwner {
 
     private lateinit var mAppViewModelStore: ViewModelStore
 
     private var mFactory: ViewModelProvider.Factory? = null
 
 
+    companion object {
+        lateinit var instance: MyApplication
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
+
         mAppViewModelStore = ViewModelStore()
+
     }
 
     /**

@@ -5,11 +5,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import me.hgj.jetpackmvvm.base.BaseApplication
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.ext.getVmClazz
 import me.hgj.jetpackmvvm.ext.util.notNull
 import me.hgj.jetpackmvvm.network.manager.NetState
 import me.hgj.jetpackmvvm.network.manager.NetworkStateManager
+import me.hgj.jetpackmvvm.util.AndroidBus
 
 /**
  * 作者　: hegaojian
@@ -28,6 +30,8 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
 
     abstract fun dismissLoading()
 
+    lateinit var mBus: AndroidBus
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDataBind().notNull({
@@ -36,6 +40,9 @@ abstract class BaseVmActivity<VM : BaseViewModel> : AppCompatActivity() {
             setContentView(layoutId())
         })
         init(savedInstanceState)
+
+        mBus = BaseApplication[this].mBus
+        this.mBus.register(this)
     }
 
     private fun init(savedInstanceState: Bundle?) {
