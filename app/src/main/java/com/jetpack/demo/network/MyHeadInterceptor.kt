@@ -17,10 +17,11 @@ class MyHeadInterceptor : Interceptor{
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
         if (!TextUtils.isEmpty(CacheUtil.getToken())) {
-            builder.addHeader("Authorization", "Bearer " + CacheUtil.getToken())
+            builder.addHeader("Authorization", "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL25ld3Rlc3QubWVkLXZpZGVvLmNvbS9hcGkvbS9hdXRoL2xvZ2luIiwiaWF0IjoxNzAyNTQzOTMyLCJleHAiOjE3MDYxNDM5MzIsIm5iZiI6MTcwMjU0MzkzMiwianRpIjoiZEd3TlNnNU8yODBjUWlOYSIsInN1YiI6NCwicHJ2IjoiYmI2NWQ5YjhmYmYwZGE5ODI3YzhlZDIzMWQ5YzU0YzgxN2YwZmJiMiJ9.IK8pcufmWRBh6lZB57_D3WbLY24c3DBT2rzOXkaxZTc").build()
         }
-        builder.addHeader("sh-platform", "android")
-        builder.addHeader("sh-deviceid", "1234567890")
+        builder.addHeader("sh-platform", "android").build()
+        builder.addHeader("sh-deviceid", "b7be4b1c4c7237b18b16811f7370475f29b0e5cd0c8f9a51474c7cf8792c813f").build()
+
         return chain.proceed(builder.build())
     }
 }

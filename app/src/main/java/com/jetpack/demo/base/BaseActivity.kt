@@ -2,8 +2,12 @@ package com.jetpack.demo.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.Gravity
 import androidx.viewbinding.ViewBinding
 import com.gyf.immersionbar.ImmersionBar
+import com.hjq.toast.ToastUtils
+import com.jetpack.demo.R
 import com.kaopiz.kprogresshud.KProgressHUD
 import me.hgj.jetpackmvvm.base.activity.BaseVmVbActivity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -32,12 +36,14 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>: BaseVmVbActiv
      * 打开等待框 在这里实现你的等待框展示
      */
     override fun showLoading(message: String) {
+        showLoading()
     }
 
     /**
      * 关闭等待框 在这里实现你的等待框关闭
      */
     override fun dismissLoading() {
+        hideLoading()
     }
 
 
@@ -60,6 +66,14 @@ abstract class BaseActivity<VM : BaseViewModel, VB : ViewBinding>: BaseVmVbActiv
         if (this.loadingDialog != null && this.loadingDialog!!.isShowing) {
             this.loadingDialog!!.dismiss()
             this.loadingDialog = null
+        }
+    }
+
+    fun showToast(message: String?) {
+        if (!TextUtils.isEmpty(message)) {
+            ToastUtils.setView(R.layout.view_custom_toast);
+            ToastUtils.setGravity(Gravity.CENTER)
+            ToastUtils.show(message)
         }
     }
 

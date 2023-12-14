@@ -1,4 +1,4 @@
-package com.jetpack.demo.viewmodel.request
+package com.jetpack.demo.network.request
 
 import androidx.lifecycle.MutableLiveData
 import com.jetpack.demo.network.apiService
@@ -16,7 +16,6 @@ class LoginViewModel : BaseViewModel() {
 
     //自动脱壳过滤处理请求结果，判断结果是否成功
 
-
     var loginState = MutableLiveData<UpdateUiState<UserInfo>>()
 
 
@@ -29,7 +28,7 @@ class LoginViewModel : BaseViewModel() {
             //失败
             val uiState = UpdateUiState(isSuccess = false, data = UserInfo(), errorMsg = it.message)
             loginState.value = uiState
-        }, isShowDialog = true)
+        })
     }
 
 }

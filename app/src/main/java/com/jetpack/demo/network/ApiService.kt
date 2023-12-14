@@ -1,10 +1,7 @@
 package com.jetpack.demo.network
 
-import com.jetpack.demo.network.models.ApiResponse
-import com.jetpack.demo.network.models.UserInfo
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import com.jetpack.demo.network.models.*
+import retrofit2.http.*
 
 /**
  * author : Jason
@@ -14,8 +11,8 @@ import retrofit2.http.POST
 interface ApiService {
 
     companion object {
-        //const val BASE_SERVER_URL = "https://new.med-video.com/api/m/"
-        const val BASE_SERVER_URL = "https://newtest.med-video.com/api/m/"
+        const val BASE_SERVER_URL = "https://new.med-video.com/api/m/"
+//        const val BASE_SERVER_URL = "https://newtest.med-video.com/api/m/"
     }
 
     /**
@@ -27,6 +24,15 @@ interface ApiService {
         @Field("mobile") username: String,
         @Field("captcha") pwd: String
     ): ApiResponse<UserInfo>
+
+
+    /**
+     * 视频列表
+     */
+    @GET("videos")
+    suspend fun getVideoList(
+        @QueryMap map: MutableMap<String, Any>
+    ): ApiResponse<VideoListInfo>
 
 
 

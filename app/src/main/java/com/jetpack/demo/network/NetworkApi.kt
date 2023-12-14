@@ -55,7 +55,7 @@ class NetworkApi: BaseNetworkApi() {
             //添加缓存拦截器 可传入缓存天数，不传默认7天
             addInterceptor(CacheInterceptor())
             //添加token过期拦截
-            addInterceptor(TokenOutInterceptor())
+            //addInterceptor(TokenOutInterceptor())
             //添加Stetho拦截器
             addNetworkInterceptor(StethoInterceptor())
             createInsecureSslSocketFactory()
