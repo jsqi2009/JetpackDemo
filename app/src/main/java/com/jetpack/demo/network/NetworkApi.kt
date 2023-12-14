@@ -28,16 +28,16 @@ import javax.net.ssl.X509TrustManager
  *  date   : 2023/12/14 13:20
  *  desc   :
  */
+
+//双重校验锁式-单例 封装NetApiService 方便直接快速调用简单的接口
+val apiService: ApiService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+    NetworkApi.instance.getApi(ApiService::class.java, ApiService.BASE_SERVER_URL)
+}
+
 class NetworkApi: BaseNetworkApi() {
 
     companion object {
-
         val instance: NetworkApi by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { NetworkApi() }
-
-        //双重校验锁式-单例 封装NetApiService 方便直接快速调用
-        val service: ApiService by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            instance.getApi(ApiService::class.java, ApiService.BASE_SERVER_URL)
-        }
     }
 
     /**

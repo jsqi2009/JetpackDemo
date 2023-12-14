@@ -22,7 +22,7 @@ interface ApiService {
      * 登录
      */
     @FormUrlEncoded
-    @POST("user/login")
+    @POST("auth/login")
     suspend fun login(
         @Field("mobile") username: String,
         @Field("captcha") pwd: String
