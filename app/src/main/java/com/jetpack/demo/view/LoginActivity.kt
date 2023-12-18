@@ -29,7 +29,7 @@ class LoginActivity : BaseActivity<BaseViewModel, ActivityLoginBinding>(), OnCli
 
     private fun login() {
         showLoading()
-        loginViewModel.login(mView.etAccount.text.toString(), "112233")
+        loginViewModel.login(views.etAccount.text.toString(), "112233")
     }
 
     override fun createObserver() {
@@ -49,9 +49,9 @@ class LoginActivity : BaseActivity<BaseViewModel, ActivityLoginBinding>(), OnCli
 
     private fun initData() {
 
-        mView.etAccount.setText("18697337630")
+        views.etAccount.setText("18697337630")
 
-        mView.tvLogin.setOnClickListener(this)
+        views.tvLogin.setOnClickListener(this)
     }
 
 

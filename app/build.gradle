@@ -1,17 +1,18 @@
 plugins {
-    //id 'com.android.application'
-    id 'com.android.library'
+    id 'com.android.application'
+//    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
     namespace 'com.jetpack.demo'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
-        //applicationId "com.jetpack.demo"
+        applicationId "com.jetpack.demo"
         minSdk 23
-        targetSdk 34
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -35,13 +36,20 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        disable 'MissingTranslation' //无视字符串缺少本地化的情况
+        disable 'ExtraTranslation'//无视多做了本地化的字符串
+    }
 }
 
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -62,5 +70,23 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.10'
     //网络请求核心库
     implementation project(path: ':ShinetechLib')
+    //BaseAdapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    //圆角圆形图片控件 主要是可以带边框
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    //refresh
+    implementation  'io.github.scwang90:refresh-layout-kernel:2.1.0'      //核心必须依赖
+    implementation  'io.github.scwang90:refresh-header-classics:2.1.0'    //经典刷新头
+    implementation  'io.github.scwang90:refresh-header-radar:2.1.0'       //雷达刷新头
+    implementation  'io.github.scwang90:refresh-header-falsify:2.1.0'     //虚拟刷新头
+    implementation  'io.github.scwang90:refresh-header-material:2.1.0'    //谷歌刷新头
+    implementation  'io.github.scwang90:refresh-header-two-level:2.1.0'   //二级刷新头
+    implementation  'io.github.scwang90:refresh-footer-ball:2.1.0'        //球脉冲加载
+    implementation  'io.github.scwang90:refresh-footer-classics:2.1.0'    //经典加载
+    //glide 图片加载
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+
 
 }

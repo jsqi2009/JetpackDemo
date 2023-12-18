@@ -50,11 +50,11 @@ class VideoViewModel : BaseViewModel() {
         }
 
         request({apiService.getVideoList(map)}, {
-            //成功
+            //请求成功
             val uiState = UpdateUiState(isSuccess = true, data = it)
             videoListState.value = uiState
         }, {
-            //失败
+            //请求失败
             val uiState = UpdateUiState(isSuccess = false, data = VideoListInfo(), errorMsg = it.message)
             videoListState.value = uiState
         })

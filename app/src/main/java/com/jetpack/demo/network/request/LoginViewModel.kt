@@ -21,11 +21,11 @@ class LoginViewModel : BaseViewModel() {
 
     fun login(username: String, password: String) {
         request({apiService.login(username, password)}, {
-            //成功
+            //请求成功
             val uiState = UpdateUiState(isSuccess = true, data = it)
             loginState.value = uiState
         }, {
-            //失败
+            //请求失败
             val uiState = UpdateUiState(isSuccess = false, data = UserInfo(), errorMsg = it.message)
             loginState.value = uiState
         })

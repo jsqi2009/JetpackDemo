@@ -11,8 +11,8 @@ import retrofit2.http.*
 interface ApiService {
 
     companion object {
-        const val BASE_SERVER_URL = "https://new.med-video.com/api/m/"
-//        const val BASE_SERVER_URL = "https://newtest.med-video.com/api/m/"
+//        const val BASE_SERVER_URL = "https://new.med-video.com/api/m/"
+        const val BASE_SERVER_URL = "https://newtest.med-video.com/api/m/"
     }
 
     /**
