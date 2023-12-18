@@ -50,10 +50,10 @@ class RootActivity : BaseActivity<BaseViewModel, ActivityRootBinding>() {
 
     override fun createObserver() {
 
-        val map: MutableMap<String, Any> = HashMap()
-
         videoViewModel.videoListState.observe(this, Observer {
             hideLoading()
+            views.refreshLayout.finishRefresh()
+            views.refreshLayout.finishLoadMore()
             if (it.isSuccess){
                 totalCount = it.data?.total!!
                 videoListInfo = it.data
@@ -104,15 +104,14 @@ class RootActivity : BaseActivity<BaseViewModel, ActivityRootBinding>() {
         views.refreshLayout.setRefreshFooter(ClassicsFooter(this))
         views.refreshLayout.setRefreshHeader(ClassicsHeader(this))
         views.refreshLayout.setOnLoadMoreListener {
-            views.refreshLayout.finishLoadMore(2000)
             //call API
-
-
+            page += 1
+            getVideoList()
         }
         views.refreshLayout.setOnRefreshListener {
-            views.refreshLayout.finishRefresh(2000)
             //call API
-
+            page = 1
+            getVideoList()
         }
     }
 
