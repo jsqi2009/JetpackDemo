@@ -13,6 +13,7 @@ import com.jetpack.demo.base.BaseActivity
 import com.jetpack.demo.databinding.ActivityLoginBinding
 import com.jetpack.demo.utils.CacheUtil
 import com.jetpack.demo.network.request.LoginViewModel
+import com.jetpack.demo.view.home.DeviceControlActivity
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 
 class LoginActivity : BaseActivity<BaseViewModel, ActivityLoginBinding>(), OnClickListener {
@@ -39,7 +40,8 @@ class LoginActivity : BaseActivity<BaseViewModel, ActivityLoginBinding>(), OnCli
                 CacheUtil.setUserInfo(it.data)
                 CacheUtil.setToken(it.data!!.token)
 
-                val intent = Intent(this, RootActivity::class.java)
+                //val intent = Intent(this, RootActivity::class.java)
+                val intent = Intent(this, DeviceControlActivity::class.java)
                 startActivity(intent)
             } else{
                 showToast(it.errorMsg)
@@ -60,7 +62,8 @@ class LoginActivity : BaseActivity<BaseViewModel, ActivityLoginBinding>(), OnCli
         when (v?.id) {
             R.id.tvLogin -> {
                 if (CacheUtil.isLogin()) {
-                    val intent = Intent(this, RootActivity::class.java)
+                    //val intent = Intent(this, RootActivity::class.java)
+                    val intent = Intent(this, DeviceControlActivity::class.java)
                     startActivity(intent)
                 } else {
                     login()
