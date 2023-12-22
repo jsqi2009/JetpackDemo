@@ -47,10 +47,10 @@ public class OverviewScoreView extends View {
     private final static int defaultPadding = 60;
 
     //  圆环起始角度
-    private final static float mStartAngle = 90 + 180 * (1 - 3f / 5f);
+    private final static float mStartAngle = 165f;
 
     // 圆环结束角度
-    private final static float mEndAngle = 360 * 3f / 5f;
+    private final static float mEndAngle = 210f;
 
     //外层圆环画笔
     private Paint mMiddleArcPaint;
@@ -89,7 +89,7 @@ public class OverviewScoreView extends View {
     private float mCurrentAngle = 0f;
 
     //总进度
-    private float mTotalAngle = 360 * 3f / 5f;
+    private float mTotalAngle = 210f;
 
     //描述
     private String description = "";
@@ -156,11 +156,11 @@ public class OverviewScoreView extends View {
 
         //分数描述画笔
         mDescriptionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mDescriptionPaint.setColor(getResources().getColor(R.color.text_color_black1));
+        mDescriptionPaint.setColor(getResources().getColor(R.color.text_color_4));
         mDescriptionPaint.setTextAlign(Paint.Align.CENTER);
         /*Typeface desTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/MyriadPro_Regular.otf");
         mDescriptionPaint.setTypeface(desTypeface);*/
-        mDescriptionPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(context, 15));
+        mDescriptionPaint.setTextSize(60);
 
         //圆环刻度画笔
         mCalibrationPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -282,7 +282,7 @@ public class OverviewScoreView extends View {
      */
     private void drawCenterText(Canvas canvas) {
         //绘制分数
-        mTextPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(mContext, 45));
+        mTextPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(mContext, 60));
         //mTextPaint.setStyle(Paint.Style.STROKE);
         canvas.drawText(String.valueOf(mMinNum), radius, radius, mTextPaint);
 
@@ -294,7 +294,7 @@ public class OverviewScoreView extends View {
     private void drawDescriptionText(Canvas canvas) {
 
         //绘制说明文字
-        mDescriptionPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(mContext, 15));
+        mDescriptionPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(mContext, 14));
         canvas.drawText(description, radius, radius + 70, mDescriptionPaint);
 
     }

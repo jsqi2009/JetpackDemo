@@ -14,6 +14,6 @@ class DeviceControlActivity : BaseActivity<BaseViewModel, ActivityDeviceControlB
     override fun initView(savedInstanceState: Bundle?) {
         initStatusBar(this)
 
-        views.viewScore.setSesameValues(90, "Air Pressure")
+        views.viewScore.setSesameValues(90, "")
     }
 }
