@@ -33,64 +33,41 @@ public class OverviewScoreView extends View {
 
     // 默认宽高值
     private int defaultSize;
-
-    // 距离圆环的值
-    private int arcDistance;
-
     // view宽度
     private int width;
-
     // view高度
     private int height;
-
     // 默认Padding值
     private final static int defaultPadding = 60;
-
     //  圆环起始角度
     private final static float mStartAngle = 165f;
-
     // 圆环结束角度
     private final static float mEndAngle = 210f;
-
+    //底层圆环画笔
+    private Paint mOuterArcPaint;
     //外层圆环画笔
-    private Paint mMiddleArcPaint;
     private Paint mOuterLinePaint;
-
     //中间文本画笔
     private Paint mTextPaint;
-
-    //刻度画笔
-    private Paint mCalibrationPaint;
-
     //进度圆环画笔
     private Paint mInnerArcPaint;
     private Paint mArcProgressPaint;
-
+    private Paint mArcRoundProgressPaint;
     //分数描述画笔
     private Paint mDescriptionPaint;
-
     //半径
     private int radius;
     private int radius1;
-
-    //外层矩形
-    private RectF mMiddleRect;
-
     //进度矩形
     private RectF mMiddleProgressRect;
-
     // 最小数字
     private int mMinNum = 0;
-
     // 最大数字
     private int mMaxNum = 100;
-
     // 当前进度
     private float mCurrentAngle = 0f;
-
     //总进度
     private float mTotalAngle = 210f;
-
     //描述
     private String description = "";
 
@@ -98,10 +75,10 @@ public class OverviewScoreView extends View {
     private Matrix matrix;
     private Context mContext;
 
-    private float outerCircleRadius;
-    private float innerCircleRadius;
     private float centerX;
     private float centerY;
+    private int value;
+    private int[] colors = {getResources().getColor(R.color.progress_color_1), getResources().getColor(R.color.progress_color_2)};
 
 
     public OverviewScoreView(Context context) {
@@ -124,14 +101,10 @@ public class OverviewScoreView extends View {
     private void init(Context context) {
         mContext = context;
 
-
         //defaultSize = ScreenUtils.getScreenWidth() - DisplayUtil.INSTANCE.dp2px(context,90F);
         defaultSize = DisplayUtil.INSTANCE.dp2px(context,270);
 
-        //defaultSize = dp2px(200);
-        arcDistance = dp2px(14);
-
-        //外层线
+        //外层环线
         mOuterLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mOuterLinePaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 1F));
         mOuterLinePaint.setColor(getResources().getColor(R.color.line_1));
@@ -139,13 +112,13 @@ public class OverviewScoreView extends View {
         mOuterLinePaint.setAlpha(80);
         mOuterLinePaint.setStrokeCap(Paint.Cap.ROUND);
 
-        //外层圆环画笔
-        mMiddleArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mMiddleArcPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 35F));
-        mMiddleArcPaint.setColor(getResources().getColor(R.color.outer_circle_color));
-        mMiddleArcPaint.setStyle(Paint.Style.STROKE);
-        mMiddleArcPaint.setAlpha(80);
-        mMiddleArcPaint.setStrokeCap(Paint.Cap.ROUND);
+        //底层圆环
+        mOuterArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mOuterArcPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 35F));
+        mOuterArcPaint.setColor(getResources().getColor(R.color.outer_circle_color));
+        mOuterArcPaint.setStyle(Paint.Style.STROKE);
+        mOuterArcPaint.setAlpha(80);
+        mOuterArcPaint.setStrokeCap(Paint.Cap.ROUND);
 
         //正中间字体画笔
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -162,15 +135,7 @@ public class OverviewScoreView extends View {
         mDescriptionPaint.setTypeface(desTypeface);*/
         mDescriptionPaint.setTextSize(60);
 
-        //圆环刻度画笔
-        mCalibrationPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mCalibrationPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 18F));
-        mCalibrationPaint.setStyle(Paint.Style.STROKE);
-        mCalibrationPaint.setColor(getResources().getColor(R.color.ring_bg_color));
-        mCalibrationPaint.setAlpha(80);
-        mCalibrationPaint.setStrokeCap(Paint.Cap.ROUND);
-
-        //内层进度画笔
+        //内层半圆画笔
         mInnerArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mInnerArcPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 16F));
         mInnerArcPaint.setStyle(Paint.Style.STROKE);
@@ -182,6 +147,12 @@ public class OverviewScoreView extends View {
         mArcProgressPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 16F));
         mArcProgressPaint.setStyle(Paint.Style.STROKE);
         mArcProgressPaint.setStrokeCap(Paint.Cap.SQUARE);
+
+        //内层圆形进度画笔
+        mArcRoundProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mArcRoundProgressPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 16F));
+        mArcRoundProgressPaint.setStyle(Paint.Style.STROKE);
+        mArcRoundProgressPaint.setStrokeCap(Paint.Cap.ROUND);
 
         matrix = new Matrix();
     }
@@ -206,9 +177,6 @@ public class OverviewScoreView extends View {
         radius = (width - 2) / 2;
         radius1 = (width - 80 - (2 * 3)) / 2;
 
-        mMiddleRect = new RectF(
-                defaultPadding, defaultPadding,
-                width - defaultPadding, height - defaultPadding);
 
         mMiddleProgressRect = new RectF(
                 defaultPadding, defaultPadding,
@@ -222,15 +190,16 @@ public class OverviewScoreView extends View {
         super.onDraw(canvas);
 
         drawOuterLine(canvas);
-        drawMiddleArc(canvas);
+        drawOuterCircleArc(canvas);
         drawInnerArc(canvas);
         drawRingProgress(canvas);
+        drawRoundProgress(canvas);
         drawCenterText(canvas);
         drawDescriptionText(canvas);
     }
 
     /**
-     * 绘制外层线
+     * 绘制外层环线
      */
     private void drawOuterLine(Canvas canvas) {
 
@@ -240,9 +209,9 @@ public class OverviewScoreView extends View {
     /**
      * 绘制外层圆环
      */
-    private void drawMiddleArc(Canvas canvas) {
+    private void drawOuterCircleArc(Canvas canvas) {
 
-        canvas.drawCircle(centerX, centerY, radius1, mMiddleArcPaint);
+        canvas.drawCircle(centerX, centerY, radius1, mOuterArcPaint);
     }
 
     /**
@@ -254,27 +223,54 @@ public class OverviewScoreView extends View {
 
     }
 
-    private int[] colors = {getResources().getColor(R.color.progress_color_1), getResources().getColor(R.color.progress_color_2)};
     /**
      * 绘制内层进度
      */
     private void drawRingProgress(Canvas canvas) {
-
-        /*SweepGradient sweepGradient  = new SweepGradient(radius, radius,
-                getResources().getColor(R.color.progress_color_1), getResources().getColor(R.color.progress_color_2));
-        matrix.setRotate(-300, radius, radius);
-        sweepGradient.setLocalMatrix(matrix);*/
-
         // 设置渐变色
-        Shader shader = new SweepGradient(centerX, centerY, colors, null);
-        mArcProgressPaint.setShader(shader);
+        /*Shader shader = new SweepGradient(centerX, centerY, colors, null);
+        mArcProgressPaint.setShader(shader);*/
+
+        SweepGradient sweepGradient  = new SweepGradient(radius, radius,
+                getResources().getColor(R.color.progress_color_1, null),
+                getResources().getColor(R.color.progress_color_2, null));
+        matrix.setRotate(-200, radius, radius);
+        sweepGradient.setLocalMatrix(matrix);
+        mArcProgressPaint.setShader(sweepGradient);
+
+        Path path = new Path();
+        if (mMaxNum == 100) {
+            path.addArc(mMiddleProgressRect, mStartAngle, mCurrentAngle);
+        } else {
+            path.addArc(mMiddleProgressRect, mStartAngle, mCurrentAngle - 3);
+        }
+
+        matrix.reset();
+
+        canvas.drawPath(path, mArcProgressPaint);
+
+    }
+
+    /**
+     * 绘制内层进度
+     */
+    private void drawRoundProgress(Canvas canvas) {
+        // 设置渐变色
+        /*Shader shader = new SweepGradient(centerX, centerY, colors, null);
+        mArcRoundProgressPaint.setShader(shader);*/
+
+        SweepGradient sweepGradient  = new SweepGradient(radius, radius,
+                getResources().getColor(R.color.progress_color_1, null),
+                getResources().getColor(R.color.progress_color_2, null));
+        matrix.setRotate(-200, radius, radius);
+        sweepGradient.setLocalMatrix(matrix);
+        mArcRoundProgressPaint.setShader(sweepGradient);
 
         Path path = new Path();
         path.addArc(mMiddleProgressRect, mStartAngle, mCurrentAngle);
         matrix.reset();
 
-
-        canvas.drawPath(path, mArcProgressPaint);
+        canvas.drawPath(path, mArcRoundProgressPaint);
     }
 
     /**
@@ -283,7 +279,6 @@ public class OverviewScoreView extends View {
     private void drawCenterText(Canvas canvas) {
         //绘制分数
         mTextPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(mContext, 60));
-        //mTextPaint.setStyle(Paint.Style.STROKE);
         canvas.drawText(String.valueOf(mMinNum), radius, radius, mTextPaint);
 
     }
@@ -292,14 +287,11 @@ public class OverviewScoreView extends View {
      * 绘制分数描述文本
      */
     private void drawDescriptionText(Canvas canvas) {
-
         //绘制说明文字
         mDescriptionPaint.setTextSize(DisplayUtil.INSTANCE.sp2px(mContext, 14));
         canvas.drawText(description, radius, radius + 70, mDescriptionPaint);
 
     }
-
-
 
     /**
      * 根据传入的值进行测量
@@ -319,6 +311,7 @@ public class OverviewScoreView extends View {
                 result = Math.min(specSize, defaultSize);
                 break;
             case MeasureSpec.EXACTLY:
+                result = defaultSize;
                 //设置math_parent 和设置了固定宽高值
                 break;
 
@@ -330,13 +323,11 @@ public class OverviewScoreView extends View {
     }
 
 
-    public void setSesameValues(int values, String des) {
+    public void updateValues(int values, String des) {
 
         mMaxNum = values;
         mTotalAngle = (mEndAngle * values)/100;
-        //description = "Overview Score";
         description = des;
-
         startAnim();
     }
 
@@ -367,6 +358,7 @@ public class OverviewScoreView extends View {
 
                 mMinNum = (int) valueAnimator.getAnimatedValue();
                 postInvalidate();
+
             }
         });
         mNumAnim.start();
