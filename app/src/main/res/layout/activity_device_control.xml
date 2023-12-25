@@ -80,6 +80,14 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tvUpdate"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:text="更新"
+        android:textColor="@color/text_color_3"
+        />
 
 
 </LinearLayout>
