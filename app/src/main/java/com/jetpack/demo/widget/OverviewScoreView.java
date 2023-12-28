@@ -38,7 +38,7 @@ public class OverviewScoreView extends View {
     // view高度
     private int height;
     // 默认Padding值
-    private final static int defaultPadding = 60;
+    private final static int defaultPadding = 70;
     //  圆环起始角度
     private final static float mStartAngle = 165f;
     // 圆环结束角度
@@ -137,20 +137,20 @@ public class OverviewScoreView extends View {
 
         //内层半圆画笔
         mInnerArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mInnerArcPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 16F));
+        mInnerArcPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 17.5F));
         mInnerArcPaint.setStyle(Paint.Style.STROKE);
         mInnerArcPaint.setColor(getResources().getColor(R.color.inner_arc_color));
         mInnerArcPaint.setStrokeCap(Paint.Cap.SQUARE);
 
         //内层进度画笔
         mArcProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mArcProgressPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 16F));
+        mArcProgressPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 17.5F));
         mArcProgressPaint.setStyle(Paint.Style.STROKE);
         mArcProgressPaint.setStrokeCap(Paint.Cap.SQUARE);
 
         //内层圆形进度画笔
         mArcRoundProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mArcRoundProgressPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 16F));
+        mArcRoundProgressPaint.setStrokeWidth(DisplayUtil.INSTANCE.dp2px(context, 17.5F));
         mArcRoundProgressPaint.setStyle(Paint.Style.STROKE);
         mArcRoundProgressPaint.setStrokeCap(Paint.Cap.ROUND);
 
@@ -175,7 +175,7 @@ public class OverviewScoreView extends View {
         centerX = width / 2f;
         centerY = height / 2f;
         radius = (width - 2) / 2;
-        radius1 = (width - 80 - (2 * 3)) / 2;
+        radius1 = (width - 80 - (2 * 10)) / 2;
 
 
         mMiddleProgressRect = new RectF(
